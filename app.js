@@ -6,12 +6,12 @@ const state = {
     selectedTopic: null,
     selectedSubtopic: null,
     content: null,
-    apiKey: sessionStorage.getItem('gemini_api_key') || '',
-    model: sessionStorage.getItem('gemini_model') || 'gemini-3-flash',
-    theme: sessionStorage.getItem('theme') || 'dark', // dark, light
-    accentColor: sessionStorage.getItem('accent_color') || '#34d399',
-    cache: JSON.parse(sessionStorage.getItem('content_cache')) || {},
-    history: JSON.parse(sessionStorage.getItem('browsing_history')) || [],
+    apiKey: localStorage.getItem('gemini_api_key') || '',
+    model: localStorage.getItem('gemini_model') || 'gemini-3-flash',
+    theme: localStorage.getItem('theme') || 'dark', // dark, light
+    accentColor: localStorage.getItem('accent_color') || '#34d399',
+    cache: JSON.parse(localStorage.getItem('content_cache')) || {},
+    history: JSON.parse(localStorage.getItem('browsing_history')) || [],
     currentItems: [], // Store items for searching
     currentOnClick: null, // Store click handler for searching
     currentPath: {} // Store current navigation path for history
@@ -84,7 +84,7 @@ function addToHistory(title, path) {
 
     state.history.unshift(historyItem);
     if (state.history.length > 20) state.history.pop();
-    sessionStorage.setItem('browsing_history', JSON.stringify(state.history));
+    localStorage.setItem('browsing_history', JSON.stringify(state.history));
 }
 
 function renderHistory() {
@@ -355,7 +355,7 @@ async function callGemini(prompt, cacheKey = null, forceRefresh = false) {
             const result = data.candidates[0].content.parts[0].text;
             if (cacheKey) {
                 state.cache[cacheKey] = result;
-                sessionStorage.setItem('content_cache', JSON.stringify(state.cache));
+                localStorage.setItem('content_cache', JSON.stringify(state.cache));
             }
             return result;
         } else {
@@ -423,8 +423,8 @@ saveSettingsBtn.onclick = () => {
     state.apiKey = apiTokenInput.value.trim();
     state.model = modelSelect.value;
 
-    sessionStorage.setItem('gemini_api_key', state.apiKey);
-    sessionStorage.setItem('gemini_model', state.model);
+    localStorage.setItem('gemini_api_key', state.apiKey);
+    localStorage.setItem('gemini_model', state.model);
 
     settingsFeedback.textContent = 'Settings saved for this session!';
     setTimeout(() => {
@@ -446,7 +446,7 @@ function applyTheme(theme) {
     document.body.classList.toggle('light-mode', theme === 'light');
     sunIcon.classList.toggle('hidden', theme === 'light');
     moonIcon.classList.toggle('hidden', theme === 'dark');
-    sessionStorage.setItem('theme', theme);
+    localStorage.setItem('theme', theme);
 }
 
 function applyAccent(color) {
@@ -459,7 +459,7 @@ function applyAccent(color) {
     const b = parseInt(color.slice(5, 7), 16);
     document.documentElement.style.setProperty('--accent-rgb', `${r}, ${g}, ${b}`);
 
-    sessionStorage.setItem('accent_color', color);
+    localStorage.setItem('accent_color', color);
 
     // Update swatches UI
     swatches.forEach(s => {

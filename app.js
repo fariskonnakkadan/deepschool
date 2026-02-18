@@ -337,12 +337,15 @@ async function callGemini(prompt, cacheKey = null, forceRefresh = false) {
 
     loadingOverlay.classList.remove('hidden');
 
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${state.model}:generateContent?key=${state.apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${state.model}:generateContent`;
 
     try {
         const response = await fetch(url, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': state.apiKey
+            },
             body: JSON.stringify({
                 contents: [{ parts: [{ text: prompt }] }]
             })

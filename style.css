@@ -196,6 +196,7 @@ body {
     .header,
     .nav-container,
     .print-btn,
+    .refresh-btn,
     .settings-modal,
     .loading-overlay {
         display: none !important;
@@ -344,6 +345,16 @@ body {
 .content-body h3 {
     margin: 2rem 0 1rem;
     color: var(--accent-color);
+}
+
+.content-body ul,
+.content-body ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.content-body li {
+    margin-bottom: 0.5rem;
 }
 
 /* Modal */
